@@ -1,9 +1,22 @@
-import { v4 } from 'uuid';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-class Appointment {
+@Entity('appointments')
+export default class Appointment {
+
+    @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Column()
     provider: string;
+
+    @Column('timestamp with time zone')
+    date: Date;
+}
+
+/* class Appointment {
+    id: string;
+
+    provider: string;   
 
     date: Date;
 
@@ -16,3 +29,5 @@ class Appointment {
 }
 
 export default Appointment;
+
+ */

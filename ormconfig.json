@@ -4,6 +4,9 @@
     "port": 5432,
     "database": "goBarber",
     "username": "postgres",
+    "entities": [
+        "./src/models/*.ts"
+    ],
     "password": "root",
     "migrations": [
         "./src/database/migrations/*.ts"
