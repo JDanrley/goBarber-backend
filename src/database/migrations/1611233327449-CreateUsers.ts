@@ -31,11 +31,6 @@ export class CreateUsers1611233327449 implements MigrationInterface {
                         isNullable: false
                     },
                     {
-                        name: 'password',
-                        type: 'varchar',
-                        isNullable: false
-                    },
-                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'now()'
@@ -53,5 +48,4 @@ export class CreateUsers1611233327449 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropTable('users');
     }
-
 }
