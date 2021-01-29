@@ -7,18 +7,32 @@ interface RequestDTO {
     password: string;
 }
 
+interface Response {
+    user: User;
+}
+
 class AuthenticateService {
-    public async execute({ email, password }: RequestDTO): Promise<void>{
+    public async execute({ email, password }: RequestDTO): Promise<Response>{
         const authRepository = getRepository(User);
-        const emailWasFound = authRepository.findOne({
+
+        const foundUser = await authRepository.findOne({
             where: { email }
         });
 
-        if (!emailWasFound){
-            throw new Error('Email/password does not mached/were found')
+        if (!foundUser){
+            throw new Error('The provided credentials were incorrect')
         }
 
-        
+        const doesPasswordMatch = await compare(password, foundUser.password);
+
+        if (!doesPasswordMatch){
+            throw new Error ('The provided credentials were incorrect');
+        }
+
+        return {
+            user: foundUser,
+        };
+
     }
 }
 
