@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import AuthenticateService from '../services/AuthenticateService';
+
 
 const sessionRouter = Router(); 
 
@@ -6,10 +8,25 @@ sessionRouter.post('/', async (request, response) => {
 
     try {
 
-    } catch (err){
-        return response.status(400).json({
-            error: err.message
-        })
+        const { email, password } = request.body;
+        const authenticateUserService = new AuthenticateService();
+        const { user } = await authenticateUserService.execute({
+            email,
+            password
+        });
+
+        const userWithoutPassword = {
+            name: user.name,
+            email: user.email,
+            id: user.id
+        }
+
+        response.json({ userWithoutPassword });
+
+    } catch (err) {    
+        return response.status(400).json(
+            { error: err.message }
+        )
     }
 });
 
