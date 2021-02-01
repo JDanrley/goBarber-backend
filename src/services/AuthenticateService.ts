@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm';
 import User from '../models/User';
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+import authConfig from '../config/auth';
 
 interface RequestDTO {
     email: string;
@@ -9,6 +11,7 @@ interface RequestDTO {
 
 interface Response {
     user: User;
+    token: string;
 }
 
 class AuthenticateService {
@@ -29,8 +32,16 @@ class AuthenticateService {
             throw new Error ('The provided credentials were incorrect');
         }
 
+        const { secret, expiresIn } = authConfig.webToken;
+
+        const token = sign({}, secret, {
+            subject: foundUser.id,
+            expiresIn,
+        })
+
         return {
             user: foundUser,
+            token,
         };
 
     }

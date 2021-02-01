@@ -10,7 +10,7 @@ sessionRouter.post('/', async (request, response) => {
 
         const { email, password } = request.body;
         const authenticateUserService = new AuthenticateService();
-        const { user } = await authenticateUserService.execute({
+        const { user, token } = await authenticateUserService.execute({
             email,
             password
         });
@@ -18,7 +18,8 @@ sessionRouter.post('/', async (request, response) => {
         const userWithoutPassword = {
             name: user.name,
             email: user.email,
-            id: user.id
+            id: user.id,
+            token
         }
 
         response.json({ userWithoutPassword });
