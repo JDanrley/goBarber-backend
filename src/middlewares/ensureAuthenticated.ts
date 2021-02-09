@@ -1,3 +1,4 @@
+import { sub } from 'date-fns';
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import authConfig from '../config/auth';
@@ -23,6 +24,12 @@ function ensureAuthentication(request: Request, response: Response, next: NextFu
         const decoded = verify(token, secret);
 
         console.log(decoded);
+
+        const { sub } = decoded as TokenPayload;
+
+        request.user = {
+            id: sub,
+        };
 
         return next();
     } catch {
